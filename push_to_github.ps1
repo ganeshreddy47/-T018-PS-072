@@ -7,20 +7,33 @@ Write-Host "========================================================" -Foregroun
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $scriptDir
 
-if (-not (Test-Path ".git")) {
-    Write-Host "Initializing Git repository..." -ForegroundColor Yellow
-    git init
-    git branch -M main
-    git remote add origin https://github.com/ganeshreddy47/-T018-PS-072.git
+# Add MinGit to PATH for this session
+$env:Path += ";C:\Users\dhanu\.gemini\antigravity\scratch\mingit\cmd"
+
+# Check git
+try {
+    & git --version | Out-Null
+} catch {
+    Write-Host "Error: Git could not be located." -ForegroundColor Red
+    exit 1
 }
 
-Write-Host "Staging files..." -ForegroundColor Yellow
-git add .
+# Ensure remote is set
+& git remote remove origin 2>$null
+& git remote add origin https://github.com/ganeshreddy47/-T018-PS-072.git
 
-Write-Host "Committing..." -ForegroundColor Yellow
-git commit -m "Complete PS-072 Result Engine implementation: engine, tests, documentation, sample data, and evaluation outputs (Team T018)"
+# Stage and commit
+& git add .
+& git commit -m "Complete PS-072 Result Engine implementation: engine, tests, documentation, sample data, and evaluation outputs (Team T018)" 2>$null
 
-Write-Host "Pushing to remote repository..." -ForegroundColor Green
-git push -u origin main
+Write-Host "Pushing to GitHub (you may be prompted for your GitHub credentials / Personal Access Token)..." -ForegroundColor Yellow
+& git push -u origin main
 
-Write-Host "Push complete!" -ForegroundColor Green
+if ($LASTEXITCODE -eq 0) {
+    Write-Host "`n========================================================" -ForegroundColor Green
+    Write-Host "SUCCESS! Repository successfully pushed to GitHub:" -ForegroundColor Green
+    Write-Host "https://github.com/ganeshreddy47/-T018-PS-072" -ForegroundColor Green
+    Write-Host "========================================================" -ForegroundColor Green
+} else {
+    Write-Host "`nPush failed. Please verify your GitHub credentials." -ForegroundColor Red
+}
