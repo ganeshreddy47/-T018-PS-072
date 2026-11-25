@@ -1,0 +1,5 @@
+section_id,section_name,question_from,question_to,marks_per_question,negative_scheme,window_start_min,window_end_min,cutoff_pct,tie_breaker
+SEC-1,Quantitative Aptitude,1,25,2,QUARTER,0,30,30.00,
+SEC-2,Logical Reasoning,26,50,2,THIRD,30,60,30.00,TIE_BREAKER_1
+SEC-3,English Language,51,75,1,THIRD,60,80,30.00,
+SEC-4,General Awareness,76,100,1,QUARTER,80,100,25.00,
